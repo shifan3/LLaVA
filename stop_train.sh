@@ -1,0 +1,1 @@
+kill `ps ax | grep py| grep train | awk '{print $1}'`

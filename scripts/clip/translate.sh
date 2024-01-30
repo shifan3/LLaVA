@@ -1,0 +1,1 @@
+python3.7 -m scripts.clip.trainslate > translate.log 2>&1 &

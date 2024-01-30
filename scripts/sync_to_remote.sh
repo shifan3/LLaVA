@@ -1,0 +1,15 @@
+rsync -avr . ateam@10.40.10.104:/mnt/data5/LLaVA \
+    --exclude .vscode \
+    --exclude .cache \
+    --exclude .git \
+    --exclude .github \
+    --exclude __pycache__ \
+    --exclude data \
+    --exclude deploy-data \
+    --exclude mathlens_env \
+    --exclude models \
+    --exclude llava_env \
+    --exclude pretrained_local \
+    --exclude build \
+    --exclude llava.egg-info \
+    --exclude results  

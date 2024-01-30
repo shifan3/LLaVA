@@ -1,0 +1,1 @@
+sh train_$1.sh > train.log 2>&1 &
