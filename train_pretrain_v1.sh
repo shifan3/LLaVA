@@ -1,5 +1,6 @@
 export MODEL=ziqingyang/chinese-llama-2-7b
-export CLIP_MODEL=openai/clip-vit-large-patch14 #openai/clip-vit-large-patch14-336
+
+export CLIP_MODEL=models/clip-vit-large-patch14-336-knowledge
 export MODEL_GROUP=$(echo $MODEL | cut -f1 -d/)
 export MODEL_NAME=$(echo $MODEL | cut -f2 -d/)
 export CLIP_MODEL_NAME=$(echo $CLIP_MODEL | cut -f2 -d/)
@@ -7,12 +8,12 @@ export OUTPUT_DIR=./checkpoints/llava-$MODEL_NAME-$CLIP_MODEL_NAME-pretrain-v1
 #!/bin/bash
 
 deepspeed llava/train/train_mem.py \
-    --deepspeed ./scripts/zero2.json \
+    --deepspeed ./scripts/zero3.json \
     --model_name_or_path /root/mathlens_2.0/pretrained_local/llm/$MODEL \
     --version plain \
-    --data_path data/LinkSoul/LLaVA-CC3M-Pretrain-595K/chat-translated.json \
-    --image_folder data/liuhaotian/LLaVA-CC3M-Pretrain-595K/images/ \
-    --vision_tower openai/clip-vit-large-patch14-336 \
+    --data_path data/knowledge/knowledge_pretrain.json \
+    --image_folder data/knowledge/images/ \
+    --vision_tower $CLIP_MODEL \
     --mm_projector_type mlp2x_gelu \
     --tune_mm_mlp_adapter True \
     --mm_vision_select_layer -2 \
