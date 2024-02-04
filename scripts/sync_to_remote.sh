@@ -12,4 +12,5 @@ rsync -avr . ateam@10.40.10.104:/mnt/data5/LLaVA \
     --exclude pretrained_local \
     --exclude build \
     --exclude llava.egg-info \
+    --exclude venv \
     --exclude results  

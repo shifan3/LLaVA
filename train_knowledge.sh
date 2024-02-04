@@ -1,5 +1,5 @@
 export MODEL=ziqingyang/chinese-llama-2-7b
-export CLIP_MODEL=openai/clip-vit-large-patch14 #openai/clip-vit-large-patch14-336
+export CLIP_MODEL=models/clip-vit-large-patch14-336-knowledge #openai/clip-vit-large-patch14-336
 export MODEL_GROUP=$(echo $MODEL | cut -f1 -d/)
 export MODEL_NAME=$(echo $MODEL | cut -f2 -d/)
 export CLIP_MODEL_NAME=$(echo $CLIP_MODEL | cut -f2 -d/)
@@ -7,14 +7,15 @@ export OUTPUT_DIR=./checkpoints/llava-$MODEL_NAME-$CLIP_MODEL_NAME-knowledge
 export EPOCH=5
 #rm $OUTPUT_DIR/checkpoint-* -rf
 #--model_name_or_path /root/mathlens_2.0/models/knowledge-$MODEL_NAME/model \
-deepspeed llava/train/train_mem.py \
+deepspeed scripts/train.py \
     --deepspeed ./scripts/zero3.json \
     --model_name_or_path /root/mathlens_2.0/pretrained_local/llm/$MODEL_GROUP/$MODEL_NAME \
     --version v1 \
     --data_path data/knowledge/knowledge_finetune.train.json \
+    --eval_data_path data/knowledge/knowledge_finetune.test.json \
     --image_folder data/knowledge/images \
     --vision_tower $CLIP_MODEL \
-    --pretrain_mm_mlp_adapter ./checkpoints/llava-$MODEL_NAME-$CLIP_MODEL_NAME-pretrain-v1/mm_projector.bin \
+    --pretrain_mm_mlp_adapter ./models/llava-$MODEL_NAME-$CLIP_MODEL_NAME-pretrain-v1/mm_projector.bin \
     --mm_projector_type mlp2x_gelu \
     --mm_vision_select_layer -2 \
     --mm_use_im_start_end False \
@@ -40,4 +41,7 @@ deepspeed llava/train/train_mem.py \
     --dataloader_num_workers 4 \
     --lazy_preprocess True \
     --image_aspect_ratio pad \
+    --eval_steps 20 \
+    --evaluation_strategy steps \
+    --per_device_eval_batch_size 8 \
     --report_to wandb
