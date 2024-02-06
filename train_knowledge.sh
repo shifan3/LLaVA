@@ -3,8 +3,8 @@ export CLIP_MODEL=models/clip-vit-large-patch14-336-knowledge #openai/clip-vit-l
 export MODEL_GROUP=$(echo $MODEL | cut -f1 -d/)
 export MODEL_NAME=$(echo $MODEL | cut -f2 -d/)
 export CLIP_MODEL_NAME=$(echo $CLIP_MODEL | cut -f2 -d/)
-export OUTPUT_DIR=./checkpoints/llava-$MODEL_NAME-$CLIP_MODEL_NAME-knowledge
-export EPOCH=3
+export OUTPUT_DIR=./checkpoints/llava-$MODEL_NAME-$CLIP_MODEL_NAME-tiku
+export EPOCH=2
 #rm $OUTPUT_DIR/checkpoint-* -rf
 #--model_name_or_path /root/mathlens_2.0/models/knowledge-$MODEL_NAME/model \
 deepspeed scripts/train.py \
