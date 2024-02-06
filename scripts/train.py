@@ -90,6 +90,7 @@ class TrainingArguments(transformers.TrainingArguments):
     optim: str = field(default="adamw_torch")
     remove_unused_columns: bool = field(default=False)
     freeze_mm_mlp_adapter: bool = field(default=False)
+    freeze_vision_tower: bool = field(default=False)
     mpt_attn_impl: Optional[str] = field(default="triton")
     model_max_length: int = field(
         default=512,
@@ -997,6 +998,11 @@ def train():
         model.config.freeze_mm_mlp_adapter = training_args.freeze_mm_mlp_adapter
         if training_args.freeze_mm_mlp_adapter:
             for p in model.get_model().mm_projector.parameters():
+                p.requires_grad = False
+        
+        model.config.freeze_vision_tower = training_args.freeze_vision_tower
+        if training_args.freeze_vision_tower:
+            for p in model.get_model().vision_tower.parameters():
                 p.requires_grad = False
 
         if training_args.bits in [4, 8]:
